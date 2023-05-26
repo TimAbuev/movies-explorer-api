@@ -24,7 +24,7 @@ app.use(routes);
 // app.use(errorLogger);
 // app.use(errors());
 
-const BASE_URL = NODE_ENV === 'production' ? 'mongodb://api.thecure.nomoredomains.monster:27017/movies' : 'mongodb://localhost:27017/movies';
+const BASE_URL = NODE_ENV === 'production' ? 'mongodb://api.thecure.nomoredomains.monster:27017/movies' : 'mongodb://localhost:27017/bitfilmsdb';
 
 mongoose.connect(`${BASE_URL}`, {
   useNewUrlParser: true,
