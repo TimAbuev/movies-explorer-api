@@ -1,8 +1,8 @@
 const router = require('express').Router();
-const { createTestUser, getUserInfo, updateProfile } = require('../controllers/usersControllers'); // важно соблюдать порядок импортируемых объектов
+const { getUserInfo, updateProfile } = require('../controllers/usersControllers'); // важно соблюдать порядок импортируемых объектов
+const auth = require('../middlewares/auth');
 
-router.post('/me', createTestUser);
-router.get('/me', getUserInfo);
-router.patch('/me', updateProfile);
+router.get('/me', auth, getUserInfo);
+router.patch('/me', auth, updateProfile);
 
 module.exports = router;

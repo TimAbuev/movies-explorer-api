@@ -1,6 +1,9 @@
 const router = require('express').Router();
-const { createTestMovie } = require('../controllers/moviesControllers'); // важно соблюдать порядок импортируемых объектов
+const { createMovie, getMovies, deleteMovie } = require('../controllers/moviesControllers'); // важно соблюдать порядок импортируемых объектов
+const auth = require('../middlewares/auth');
 
-router.post('/', createTestMovie);
+router.post('/', auth, createMovie);
+router.get('/', auth, getMovies);
+router.delete('/:movieId', auth, deleteMovie);
 
 module.exports = router;
