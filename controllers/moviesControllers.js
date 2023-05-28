@@ -1,10 +1,14 @@
 const Movie = require('../models/movieSchema').movieSchema;
+const errorHandler = require('../middlewares/errorHandler');
+
+const { NotFoundError } = require('../errors/NotFoundError');
+const { OtherMovieError } = require('../errors/OtherMovieError');
 
 function createMovie(req, res, next) {
   return Movie.create({ ...req.body, owner: req.user._id })
     .then((movie) => Movie.populate(movie, { path: 'owner' }))
     .then((m) => res.status(201).send(m))
-    .catch((err) => next(err));
+    .catch((error) => { errorHandler(error, req, res, next); });
 }
 
 function getMovies(req, res, next) {
@@ -24,12 +28,12 @@ function deleteMovie(req, res, next) {
     .then((movie) => {
       if (userId !== movie.owner.toString()) {
         console.log(`req.user._id = ${typeof userId}; card.owner = ${typeof movie.owner}`);
-        throw new OtherCardError();
+        throw new OtherMovieError();
       }
       return Movie.deleteOne({ _id: movieId });
     })
     .then((movie) => res.status(200).send(movie))
-    .catch((err) => next(err));
+    .catch((error) => { errorHandler(error, req, res, next); });
 }
 
 module.exports = { createMovie, getMovies, deleteMovie };

@@ -6,7 +6,7 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 // const { errors } = require('celebrate');
 const routes = require('./routes/index');
-// const { NotFoundError } = require('./errors/NotFoundError');
+const { NotFoundError } = require('./errors/NotFoundError');
 // const allowCORS = require('./middleware/allowCORS');
 // const { requestLogger, errorLogger } = require('./middleware/logger');
 
@@ -18,9 +18,9 @@ app.use(bodyParser.json());
 // app.use(requestLogger);
 app.use(routes);
 
-// app.use((req, res, next) => {
-//   next(new NotFoundError('Not found'));
-// });
+app.use((req, res, next) => {
+  next(new NotFoundError('Not found'));
+});
 // app.use(errorLogger);
 // app.use(errors());
 
@@ -31,14 +31,14 @@ mongoose.connect(`${BASE_URL}`, {
   useUnifiedTopology: true,
 });
 
-// app.use((err, req, res, next) => {
-//   if (err.statusCode) {
-//     res.status(err.statusCode).send({ error: err.message });
-//   } else {
-//     res.status(500).send({ error: 'Internal server errorrrr' });
-//     next();
-//   }
-// });
+app.use((err, req, res, next) => {
+  if (err.statusCode) {
+    res.status(err.statusCode).send({ error: err.message });
+  } else {
+    res.status(500).send({ error: 'Internal server errorrrr' });
+    next();
+  }
+});
 
 app.listen(PORT, () => {
   console.log(`privet && app listening on port ${PORT}`);

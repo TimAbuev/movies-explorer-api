@@ -4,6 +4,8 @@ const bcrypt = require('bcrypt');
 const jsonwebtoken = require('jsonwebtoken');
 
 const User = require('../models/userSchema').userSchema;
+const errorHandler = require('../middlewares/errorHandler');
+const { UnauthorizedError } = require('../errors/UnauthorizedError');
 
 function createUser(req, res, next) {
   const { password: userPassword, ...userProps } = req.body;
@@ -13,7 +15,7 @@ function createUser(req, res, next) {
       const { password, ...userWithoutPassword } = user.toObject();
       return res.status(201).send(userWithoutPassword);
     })
-    .catch((err) => next(err));
+    .catch((error) => { errorHandler(error, req, res, next); });
 }
 
 function login(req, res, next) {
@@ -35,13 +37,13 @@ function login(req, res, next) {
       const { password, ...userWithoutPassword } = user.toObject();
       res.send({ user: userWithoutPassword, jwt });
     })
-    .catch((err) => next(err));
+    .catch((error) => { errorHandler(error, req, res, next); });
 }
 
 function getUserInfo(req, res, next) {
-  return User.find({})
+  return User.findById(req.user._id)
     .then((user) => res.status(200).send(user))
-    .catch((err) => next(err));
+    .catch((error) => { errorHandler(error, req, res, next); });
 }
 
 function updateUser(updateData) {
@@ -54,7 +56,7 @@ function updateUser(updateData) {
       .then(() => {
         res.status(200).send(req.body);
       })
-      .catch((err) => next(err));
+      .catch((error) => { errorHandler(error, req, res, next); });
   };
 }
 
