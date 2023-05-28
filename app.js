@@ -4,7 +4,7 @@ const { NODE_ENV } = process.env;
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-// const { errors } = require('celebrate');
+const { errors } = require('celebrate');
 const routes = require('./routes/index');
 const { NotFoundError } = require('./errors/NotFoundError');
 // const allowCORS = require('./middleware/allowCORS');
@@ -22,7 +22,7 @@ app.use((req, res, next) => {
   next(new NotFoundError('Not found'));
 });
 // app.use(errorLogger);
-// app.use(errors());
+app.use(errors());
 
 const BASE_URL = NODE_ENV === 'production' ? 'mongodb://api.thecure.nomoredomains.monster:27017/movies' : 'mongodb://localhost:27017/bitfilmsdb';
 
