@@ -7,13 +7,13 @@ const bodyParser = require('body-parser');
 const { errors } = require('celebrate');
 const routes = require('./routes/index');
 const { NotFoundError } = require('./errors/NotFoundError');
-// const allowCORS = require('./middleware/allowCORS');
+const allowCORS = require('./middlewares/allowCORS');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 
 const { PORT = 3000 } = process.env;
 const app = express();
 
-// app.use(allowCORS);
+app.use(allowCORS);
 app.use(bodyParser.json());
 app.use(requestLogger);
 app.use(routes);
