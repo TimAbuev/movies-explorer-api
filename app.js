@@ -24,7 +24,7 @@ app.use((req, res, next) => {
 app.use(errorLogger);
 app.use(errors());
 
-const BASE_URL = NODE_ENV === 'production' ? 'mongodb://158.160.5.244:27017/bitfilmsdb' : 'mongodb://localhost:27017/bitfilmsdb';
+const BASE_URL = NODE_ENV === 'production' ? 'mongodb://api.carousel.nomoredomains.rocks::27017/bitfilmsdb' : 'mongodb://localhost:27017/bitfilmsdb';
 
 mongoose.connect(`${BASE_URL}`, {
   useNewUrlParser: true,
