@@ -6,6 +6,6 @@ const { createMovieSchema, paramSchema } = require('../models/movieSchema');
 
 router.post('/', auth, celebrate({ body: createMovieSchema }), createMovie);
 router.get('/', auth, getMovies);
-router.delete('/:movieId', auth,celebrate({ params: paramSchema }), deleteMovie);
+router.delete('/:movieId', auth, celebrate({ params: paramSchema }), deleteMovie);
 
 module.exports = router;

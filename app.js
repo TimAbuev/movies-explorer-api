@@ -3,7 +3,6 @@ require('dotenv').config();
 const { NODE_ENV } = process.env;
 const express = require('express');
 const mongoose = require('mongoose');
-const bodyParser = require('body-parser');
 const { errors } = require('celebrate');
 const routes = require('./routes/index');
 const { NotFoundError } = require('./errors/NotFoundError');
@@ -14,7 +13,7 @@ const { PORT = 3000 } = process.env;
 const app = express();
 
 app.use(allowCORS);
-app.use(bodyParser.json());
+app.use(express.json());
 app.use(requestLogger);
 app.use(routes);
 
@@ -23,8 +22,8 @@ app.use((req, res, next) => {
 });
 app.use(errorLogger);
 app.use(errors());
-
-const BASE_URL = NODE_ENV === 'production' ? 'mongodb://api.carousel.nomoredomains.rocks::27017/bitfilmsdb' : 'mongodb://localhost:27017/bitfilmsdb';
+const URL = NODE_ENV === 'URL';
+const BASE_URL = NODE_ENV === 'production' ? URL : 'mongodb://localhost:27017/bitfilmsdb';
 
 mongoose.connect(`${BASE_URL}`, {
   useNewUrlParser: true,
