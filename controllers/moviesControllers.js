@@ -18,23 +18,24 @@ function getMovies(req, res, next) {
     .catch((err) => next(err));
 }
 
-function deleteMovie(req, res, next) {
+async function deleteMovie(req, res, next) {
   const { movieId } = req.params;
   const userId = req.user._id;
 
-  Movie.findById({ _id: movieId })
-    .orFail(() => {
-      throw new NotFoundError('Фильм не найден');
-    })
-    .then((movie) => {
-      if (userId !== movie.owner.toString()) {
-        console.log(`req.user._id = ${typeof userId}; card.owner = ${typeof movie.owner}`);
-        throw new OtherMovieError();
-      }
-      return Movie.deleteOne({ _id: movieId });
-    })
-    .then((movie) => res.status(200).send(movie))
-    .catch((error) => { errorHandler(error, req, res, next); });
+  try {
+    const movie = await Movie.findById({ _id: movieId }).orFail(new NotFoundError('Фильм не найден'));
+
+    if (userId !== movie.owner.toString()) {
+      console.log(`req.user._id = ${typeof userId}; movie.owner = ${typeof movie.owner}`);
+      throw new OtherMovieError();
+    }
+
+    await movie.deleteOne();
+
+    res.status(200).send(movie);
+  } catch (error) {
+    errorHandler(error, req, res, next);
+  }
 }
 
 module.exports = { createMovie, getMovies, deleteMovie };
