@@ -7,12 +7,13 @@ const { OtherMovieError } = require('../errors/OtherMovieError');
 function createMovie(req, res, next) {
   return Movie.create({ ...req.body, owner: req.user._id })
     .then((movie) => Movie.populate(movie, { path: 'owner' }))
-    .then((m) => res.status(201).send(m))
+    .then((movie) => res.status(201).send(movie))
     .catch((error) => { errorHandler(error, req, res, next); });
 }
 
 function getMovies(req, res, next) {
-  return Movie.find({})
+  const ownerId = req.user._id;
+  return Movie.find({ owner: ownerId })
     .then((movies) => res.status(200).send(movies))
     .catch((err) => next(err));
 }
