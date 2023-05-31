@@ -8,6 +8,7 @@ const routes = require('./routes/index');
 const { NotFoundError } = require('./errors/NotFoundError');
 const allowCORS = require('./middlewares/allowCORS');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
+const lastErrorHandler = require('./middlewares/lastErrorHandler');
 
 const { PORT = 3000 } = process.env;
 const app = express();
@@ -30,14 +31,7 @@ mongoose.connect(`${BASE_URL}`, {
   useUnifiedTopology: true,
 });
 
-app.use((err, req, res, next) => {
-  if (err.statusCode) {
-    res.status(err.statusCode).send({ error: err.message });
-  } else {
-    res.status(500).send({ error: 'Internal server errorrrr' });
-    next();
-  }
-});
+app.use(lastErrorHandler);
 
 app.listen(PORT, () => {
   console.log(`privet && app listening on port ${PORT}`);
