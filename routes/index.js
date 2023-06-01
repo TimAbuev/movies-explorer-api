@@ -7,10 +7,11 @@ const { signupUserSchema, signinUserSchema } = require('../models/userSchema');
 const auth = require('../middlewares/auth');
 const clearJwtCookie = require('../middlewares/clearJwtCookie');
 
-router.use('/users', userRoutes);
-router.use('/movies', movieRoutes);
 router.post('/signup', celebrate({ body: signupUserSchema }), createUser);
 router.post('/signin', celebrate({ body: signinUserSchema }), login);
-router.get('/signout', auth, clearJwtCookie);
+router.use(auth);
+router.get('/signout', clearJwtCookie);
+router.use('/users', userRoutes);
+router.use('/movies', movieRoutes);
 
 module.exports = router;
