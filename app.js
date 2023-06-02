@@ -1,6 +1,6 @@
 require('dotenv').config();
 
-const { NODE_ENV } = process.env;
+const { NODE_ENV, URL } = process.env;
 const express = require('express');
 const mongoose = require('mongoose');
 const { errors } = require('celebrate');
@@ -23,7 +23,6 @@ app.use((req, res, next) => {
 });
 app.use(errorLogger);
 app.use(errors());
-const URL = NODE_ENV === 'URL';
 const BASE_URL = NODE_ENV === 'production' ? URL : 'mongodb://localhost:27017/bitfilmsdb';
 
 mongoose.connect(`${BASE_URL}`, {
