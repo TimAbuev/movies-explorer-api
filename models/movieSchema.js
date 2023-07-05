@@ -90,6 +90,7 @@ module.exports = {
     updated_at: Joi.date().required(),
   }),
   paramSchema: Joi.object({
-    movieId: Joi.string().required().hex().length(24),
+    // movieId: Joi.string().required().hex().length(24),
+    movieId: Joi.number().required(),
   }),
 };

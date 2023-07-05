@@ -23,7 +23,7 @@ async function deleteMovie(req, res, next) {
   const userId = req.user._id;
 
   try {
-    const movie = await Movie.findById({ _id: movieId }).orFail(new NotFoundError('Фильм не найден'));
+    const movie = await Movie.findOne({ id: movieId }).orFail(new NotFoundError('Фильм не найден'));
 
     if (userId !== movie.owner.toString()) {
       console.log(`req.user._id = ${typeof userId}; movie.owner = ${typeof movie.owner}`);
