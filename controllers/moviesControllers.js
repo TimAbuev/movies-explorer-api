@@ -2,7 +2,7 @@ const Movie = require('../models/movieSchema').movieSchema;
 const errorHandler = require('../middlewares/errorHandler');
 
 const { NotFoundError } = require('../errors/NotFoundError');
-const { OtherMovieError } = require('../errors/OtherMovieError');
+// const { OtherMovieError } = require('../errors/OtherMovieError');
 
 function createMovie(req, res, next) {
   return Movie.create({ ...req.body, owner: req.user._id })
@@ -20,15 +20,15 @@ function getMovies(req, res, next) {
 
 async function deleteMovie(req, res, next) {
   const { movieId } = req.params;
-  const userId = req.user._id;
+  // const userId = req.user._id;
 
   try {
     const movie = await Movie.findOne({ id: movieId }).orFail(new NotFoundError('Фильм не найден'));
 
-    if (userId !== movie.owner.toString()) {
-      console.log(`req.user._id = ${typeof userId}; movie.owner = ${typeof movie.owner}`);
-      throw new OtherMovieError();
-    }
+    // if (userId !== movie.owner.toString()) {
+    //   console.log(`req.user._id = ${typeof userId}; movie.owner = ${typeof movie.owner}`);
+    //   throw new OtherMovieError();
+    // }
 
     await movie.deleteOne();
 
