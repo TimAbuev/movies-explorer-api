@@ -5,7 +5,6 @@ const express = require('express');
 const mongoose = require('mongoose');
 const { errors } = require('celebrate');
 const cors = require('cors');
-// const allowCORS = require('./middlewares/allowCORS');
 const routes = require('./routes/index');
 const { NotFoundError } = require('./errors/NotFoundError');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
@@ -14,12 +13,7 @@ const lastErrorHandler = require('./middlewares/lastErrorHandler');
 const { PORT = 3000 } = process.env;
 const app = express();
 
-// app.use(allowCORS);
-app.use(cors({
-  origin: '*',
-  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-  allowedHeaders: ['Content-Type', 'Authorization'],
-}));
+app.use(cors());
 
 app.use(express.json());
 app.use(requestLogger);
