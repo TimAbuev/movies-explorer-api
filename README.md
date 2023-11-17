@@ -5,6 +5,6 @@
 
 ## Ссылки на проект
 
-IP-адрес 158.160.5.244
+IP-адрес 85.143.218.227
 
 Backend https://api.carousel.nomoredomains.rocks
